@@ -2,9 +2,7 @@
 from PIL import Image
 import numpy as np
 import tensorflow as tf
-import matplotlib.pyplot as plt
 import h5py
-import cv2
 
 # Reading the model from JSON file
 with open('Model_AKL_700_epochs_Adadelta.json', 'r') as json_file:
