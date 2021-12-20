@@ -3,6 +3,8 @@ from PIL import Image
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
+import h5py
+import cv2
 
 # Reading the model from JSON file
 with open('Model_AKL_700_epochs_Adadelta.json', 'r') as json_file:
@@ -53,7 +55,7 @@ def create_img(path):
 
 
 def predict(img_path):
-    print(img_path)
+    #print(img_path)
     img_generator = test_image_generator(img_path)
     predicted_density = model.predict(img_generator)
     predicted_img = predicted_density[0]
@@ -61,11 +63,55 @@ def predict(img_path):
     return predicted_img, count
 
 
+def get_density_gt(filename):
+    with h5py.File(filename, "r") as f:
+        # List all groups
+        #print("Keys: %s" % f.keys())
+        a_group_key = list(f.keys())[0]
+
+        # Get the data
+        data = list(f[a_group_key])
+    return data, np.sum(data)
 
 
 
 
 
+
+#
+#
+# img_generator = test_image_generator('./static/images/crowd.jpg')
+# predicted_density = model.predict(img_generator)
+# predicted_img = predicted_density[0]
+# count = np.sum(predicted_density[0])
+# #######################
+# img = predicted_img
+# print(np.max(img))
+# img = img * 255
+# print(np.max(img))
+#
+# print(img.dtype)
+# img = img.astype(np.uint8)
+# print(img.dtype)
+# cv2.imwrite('density.jpg', img)
+# real_img = cv2.imread('./static/images/crowd.jpg')
+# width = int(img.shape[1] * 8)
+# height = int(img.shape[0] * 8)
+# # dsize
+# dsize = (width, height)
+# # resize image
+# output = cv2.resize(img, dsize)
+# masked = real_img + (output.reshape(real_img.shape[0], real_img.shape[1], 1) * 15)
+# cv2.imwrite('masked.jpg', masked)
+#
+#
+
+
+
+
+#
+# plt.imshow(predicted_img)
+# plt.show()
 
 # img_generator = test_image_generator('static/images/IMG_1.jpg')
 # predicted_density = model.predict(img_generator)
