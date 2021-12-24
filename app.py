@@ -8,12 +8,16 @@ from Prediction import predict, get_density_gt
 app = Flask(__name__)
 
 
-@app.route('/', methods=['GET'])
+@app.route('/')
+def hello_world():
+    return 'Hello World!'
+
+@app.route('/home', methods=['GET'])
 def start():
     return render_template('index.html')
 
 
-@app.route('/', methods=['POST'])
+@app.route('/home', methods=['POST'])
 def predict_count():
     if request.method == 'POST':
         files = request.files.getlist('files[]')
